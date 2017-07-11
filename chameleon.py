@@ -32,7 +32,7 @@ class Chameleon:
             print "\033[92m%s\033[0;0m" % data
 
     def run(self, args):
-        if args.proxy == 'm':
+        if args.proxy == 'm' or args.proxy == 'a':
             print "\033[1;34m[-] Targeting McAfee Trustedsource\033[0;0m"
             ts = trustedsource.TrustedSource(args.domain)
             if args.check:
@@ -40,7 +40,7 @@ class Chameleon:
             elif args.submit:
                 ts.check_category(True)
 
-        if args.proxy == 'b':
+        if args.proxy == 'b' or args.proxy == 'a':
             print "\033[1;34m[-] Targeting Bluecoat WebPulse\033[0;0m"
             if args.check:
                 b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
@@ -53,47 +53,16 @@ class Chameleon:
                     if choice == 'Y' or choice =='y':
                         b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
                         b.run()
-                        return True
+                        break
                     elif choice == 'N' or choice == 'n':
-                        return False
+                        break
 
-        if args.proxy == 'i':
+        if args.proxy == 'i' or args.proxy == 'a':
             print "\033[1;34m[-] Targeting IBM Xforce\033[0;0m"
             xf = ibmxforce.IBMXforce(args.domain)
             if args.check:
                 xf.checkIBMxForce()
             elif args.submit:
-                xf.submit_category()
-
-        if args.proxy == 'a':
-            if args.check:
-                print "\033[1;34m[-] Targeting Bluecoat WebPulse\033[0;0m"
-                b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
-                b.check_category()
-                print "\033[1;34m[-] Targeting McAfee Trustedsource\033[0;0m"
-                ts = trustedsource.TrustedSource(args.domain)
-                ts.check_category(False)
-                print "\033[1;34m[-] Targeting IBM Xforce\033[0;0m"
-                xf = ibmxforce.IBMXforce(args.domain)
-                xf.checkIBMxForce()
-            elif args.submit:
-                print "\033[1;34m[-] Targeting Bluecoat WebPulse\033[0;0m"
-                print "\033[1;31m[-] WARNING: This module must be run from the webserver you want to categorise\033[0;0m"
-                print "\033[1;31m[-] Proceed: Y/N\033[0;0m"
-                while True:
-                    choice = raw_input().lower()
-                    if choice == 'Y' or choice =='y':
-                        b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
-                        b.run()
-                        break
-                    elif choice == 'N' or choice == 'n':
-                        return False
-                print "\033[1;34m[-] Targeting McAfee Trustedsource\033[0;0m"
-                ts = trustedsource.TrustedSource(args.domain)
-                ts.check_category(True)
-                print "\033[1;34m[-] Targeting IBM Xforce\033[0;0m"
-                xf = ibmxforce.IBMXforce(args.domain)
-                xf.checkIBMxForce()
                 xf.submit_category()
 
 if __name__ == "__main__":
