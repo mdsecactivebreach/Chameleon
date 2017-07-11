@@ -82,3 +82,9 @@ $ python chameleon.py --proxy m --submit --domain foobar.com
 ```
 
 **Caution**: when attempting to categorise a site in Bluecoat, do not check the category first otherwise it will end up uncategorised! Individual hosts can however be categorised differently.
+
+# Credits
+
+Chameleon was developed by [Dominic Chell](https://twitter.com/domchell) of the [MDSec ActiveBreach](https://www.mdsec.co.uk/services/red-teaming/) team.
+
+Categorisation checks for Bluecoat and IBM X-Force were reused based on code originally developed in [DomainHunter](https://github.com/minisllc/domainhunter) and [CatMyFish](https://github.com/Mr-Un1k0d3r/CatMyFish).
