@@ -43,7 +43,7 @@ class Chameleon:
         if args.proxy == 'b':
             print "\033[1;34m[-] Targeting Bluecoat WebPulse\033[0;0m"
             if args.check:
-                b = bluecoat.Bluecoat(args.domain, 'https://www.bloomberg.com')
+                b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
                 b.check_category()
             elif args.submit:
                 print "\033[1;31m[-] WARNING: This module must be run from the webserver you want to categorise\033[0;0m"
@@ -51,7 +51,7 @@ class Chameleon:
                 while True:
                     choice = raw_input().lower()
                     if choice == 'Y' or choice =='y':
-                        b = bluecoat.Bluecoat(args.domain, 'https://www.bloomberg.com')
+                        b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
                         b.run()
                         return True
                     elif choice == 'N' or choice == 'n':
@@ -68,7 +68,7 @@ class Chameleon:
         if args.proxy == 'a':
             if args.check:
                 print "\033[1;34m[-] Targeting Bluecoat WebPulse\033[0;0m"
-                b = bluecoat.Bluecoat(args.domain, 'https://www.bloomberg.com')
+                b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
                 b.check_category()
                 print "\033[1;34m[-] Targeting McAfee Trustedsource\033[0;0m"
                 ts = trustedsource.TrustedSource(args.domain)
@@ -83,7 +83,7 @@ class Chameleon:
                 while True:
                     choice = raw_input().lower()
                     if choice == 'Y' or choice =='y':
-                        b = bluecoat.Bluecoat(args.domain, 'https://www.bloomberg.com')
+                        b = bluecoat.Bluecoat(args.domain, 'https://www.bankofamerica.com')
                         b.run()
                         break
                     elif choice == 'N' or choice == 'n':

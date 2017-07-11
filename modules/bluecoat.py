@@ -83,8 +83,10 @@ class Bluecoat:
     def serve_content(self):
         print "[-] Serving content over HTTP server"
         self.server = ThreadedHTTPServer("0.0.0.0", 80)
-        self.server.start()
-
+	try:
+        	self.server.start()
+	except:
+		pass
     def shutdown_server(self):
         print "[-] Shutting down HTTP server"
         self.server.stop()
@@ -92,8 +94,8 @@ class Bluecoat:
     def run(self):
         self.clone()
         self.serve_content()
-        time.sleep(15)
-        self.check_category()
+        time.sleep(10)
+	self.check_category()
         self.shutdown_server()
 
 
