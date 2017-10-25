@@ -3,6 +3,7 @@ import json
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
+
 class IBMXforce:
 
     def __init__(self, domain):
@@ -15,27 +16,30 @@ class IBMXforce:
     def checkIBMxForce(self):
         print('[-] IBM xForce Check: {}'.format(self.domain))
         s = requests.Session()
-        useragent = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)'
+        useragent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0'
         try:
-            url = 'https://exchange.xforce.ibmcloud.com/url/{}'.format(self.domain)
-            headers = {'User-Agent':useragent,
-                        'Accept':'application/json, text/plain, */*',
-                        'x-ui':'XFE',
-                        'Origin':url,
-                        'Referer':url}
-            url = 'https://api.xforce.ibmcloud.com/url/{}'.format(self.domain)
-            response = s.get(url,headers=headers,verify=False)
+            url = 'https://exchange.xforce.ibmcloud.com/api/url/{}'.format(
+                self.domain)
+            headers = {
+                'User-Agent': useragent,
+                'Accept': 'application/json, text/plain, */*',
+                'Accept-Language': 'en-GB,en;q=0.5',
+                'x-ui': 'XFE',
+                'Referer': "https://exchange.xforce.ibmcloud.com/url/{}".format(self.domain),
+                'Connection': 'close'
+            }
+            response = s.get(url, headers=headers, verify=False)
+
+            if response.status_code == 404:
+                print('[-] IBM x-Force does not have entries for the domain!')
+                return "-"
 
             responseJson = json.loads(response.text)
 
-            if 'error' in responseJson:
-                a = responseJson['error']
-            else:
-                a = responseJson["result"]['cats']
+            print "\033[1;32m[-] Domain categorised as {}\033[0;0m"\
+                .format(" | ".join(responseJson["result"].get('cats', {}).keys()))
 
-            print "\033[1;32m[-] Domain categorised as %s\033[0;0m"  % responseJson["result"].get('cats',{}).keys()[0]
-
-        except Exception as e:
+        except Exception as e:            
             print('[-] Error retrieving IBM x-Force reputation!')
             return "-"
 
@@ -44,16 +48,17 @@ class IBMXforce:
         s = requests.Session()
         useragent = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)'
         url = 'https://exchange.xforce.ibmcloud.com/url/{}'.format(self.domain)
-        headers = {'User-Agent':useragent,
-                    'Accept':'application/json, text/plain, */*',
-                    'x-ui':'XFE',
-                    'Origin':url,
-                    'Referer':url,
-                    'Content-Type': 'application/json;charset=utf-8'}
+        headers = {'User-Agent': useragent,
+                   'Accept': 'application/json, text/plain, */*',
+                   'x-ui': 'XFE',
+                   'Origin': url,
+                   'Referer': url,
+                   'Content-Type': 'application/json;charset=utf-8'}
         post_data = "{\"feedback\":{\"sourceid\":\"%s\",\"feedbacktext\":\"\",\"current\":{\"urlcategory\":[]},\"proposed\":{\"urlcategory\":[{\"name\":\"Banking\",\"action\":\"ADD\",\"id\":\"53\"}]},\"webApplication\":\"\",\"notify\":true,\"postAsComment\":true}}" % self.domain
 
-        url = 'https://exchange.xforce.ibmcloud.com/api/url/feedback/{}'.format(self.domain)
-        response = s.post(url, data = post_data, headers = headers)
+        url = 'https://exchange.xforce.ibmcloud.com/api/url/feedback/{}'.format(
+            self.domain)
+        response = s.post(url, data=post_data, headers=headers)
         if "Thank you for your time and feedback" in response.content:
             print "[-] Category successfully submitted, please wait an hour"
         else:
