@@ -60,12 +60,12 @@ class Bluecoat:
         # Category checking lifted from CatMyFish
         # https://github.com/Mr-Un1k0d3r/CatMyFish/blob/master/CatMyFish.py
         print "[-] Checking category for " + self.url
-        request = urllib2.Request("https://sitereview.bluecoat.com/rest/categorization")
+        request = urllib2.Request("https://sitereview.bluecoat.com/resource/lookup")
         request.add_header("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)")
-        request.add_header("Origin", "https://sitereview.bluecoat.com")
-        request.add_header("Referer", "https://sitereview.bluecoat.com/sitereview.jsp")
-        request.add_header("X-Requested-With", "XMLHttpRequest")
-        response = urllib2.urlopen(request, "url=" + self.url)
+        request.add_header("Referer", "https://sitereview.bluecoat.com/lookup")
+        request.add_header("Content-Type", "application/json; charset=utf-8")
+        post_data = {"url": self.url, "captcha": ""} 
+        response = urllib2.urlopen(request, json.dumps(post_data))
 
         try:
             json_data = json.loads(response.read())
@@ -73,9 +73,10 @@ class Bluecoat:
                 if json_data["errorType"] == "captcha":
                     print "[-] BlueCoat blocked us :("
                     sys.exit(0)
-            cat = BeautifulSoup(json_data["categorization"], "html.parser")
-            cat = cat.find("a")
-            cat = cat.text
+            category = []
+            for entry in json_data["categorization"]:
+                category.append(entry["name"])
+            cat = ', '.join(category) 
             print "\033[1;32m[-] Your site is categorised as: " + cat + "\033[0;0m"
         except Exception as e:
 			print "[-] An error occurred"
