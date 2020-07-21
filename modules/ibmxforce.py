@@ -14,7 +14,7 @@ class IBMXforce:
     # https://github.com/minisllc/domainhunter/blob/master/domainhunter.py
     # Credit: Joe Vest and Andrew Chiles
     def checkIBMxForce(self):
-        print('[-] IBM xForce Check: {}'.format(self.domain))
+        print(('[-] IBM xForce Check: {}'.format(self.domain)))
         s = requests.Session()
         useragent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0'
         try:
@@ -36,15 +36,15 @@ class IBMXforce:
 
             responseJson = json.loads(response.text)
 
-            print "\033[1;32m[-] Domain categorised as {}\033[0;0m"\
-                .format(" | ".join(responseJson["result"].get('cats', {}).keys()))
+            print(("\033[1;32m[-] Domain categorised as {}\033[0;0m"\
+                .format(" | ".join(list(responseJson["result"].get('cats', {}).keys())))))
 
         except Exception as e:            
             print('[-] Error retrieving IBM x-Force reputation!')
             return "-"
 
     def submit_category(self):
-        print('[-] Submitting {} for Financial category'.format(self.domain))
+        print(('[-] Submitting {} for Financial category'.format(self.domain)))
         s = requests.Session()
         useragent = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)'
         url = 'https://exchange.xforce.ibmcloud.com/url/{}'.format(self.domain)
@@ -59,10 +59,10 @@ class IBMXforce:
         url = 'https://exchange.xforce.ibmcloud.com/api/url/feedback/{}'.format(
             self.domain)
         response = s.post(url, data=post_data, headers=headers)
-        if "Thank you for your time and feedback" in response.content:
-            print "[-] Category successfully submitted, please wait an hour"
+        if b"Thank you for your time and feedback" in response.content:
+            print("[-] Category successfully submitted, please wait an hour")
         else:
-            print "[-] Error submitting category"
+            print("[-] Error submitting category")
 
 if __name__ == "__main__":
     url = sys.argv[1]
