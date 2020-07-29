@@ -32,16 +32,16 @@ class IBMXforce:
 
             if response.status_code == 404:
                 print('[-] IBM x-Force does not have entries for the domain!')
-                return "-"
+                return "No reputation known"
 
             responseJson = json.loads(response.text)
-
-            print(("\033[1;32m[-] Domain categorised as {}\033[0;0m"\
-                .format(" | ".join(list(responseJson["result"].get('cats', {}).keys())))))
-
+            parsedJson = "{}".format(" | ".join(list(responseJson["result"].get('cats', {}).keys())))
+            print("\033[1;32m[-] Domain categorised as " + parsedJson + "\033[0;0m")
+            return(parsedJson)
+            
         except Exception as e:            
             print('[-] Error retrieving IBM x-Force reputation!')
-            return "-"
+            return "Error getting reputation"
 
     def submit_category(self):
         print(('[-] Submitting {} for Financial category'.format(self.domain)))

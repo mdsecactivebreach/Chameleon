@@ -40,6 +40,8 @@ class TrustedSource:
 
         if submit:
             self.submit_category(sid)
+        
+        return(td[len(td) - 2].text)
 
     def submit_category(self, sid):
         print("[-] Submitting URL for finance category")
