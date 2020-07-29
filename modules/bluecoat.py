@@ -82,12 +82,14 @@ class Bluecoat:
             if "errorType" in json_data:
                 if json_data["errorType"] == "captcha":
                     print("[-] BlueCoat blocked us :(")
+                    return("Blocked by BlueCoat")
                     sys.exit(0)
             category = []
             for entry in json_data["categorization"]:
                 category.append(entry["name"])
             cat = ', '.join(category)
             print("\033[1;32m[-] Your site is categorised as: " + cat + "\033[0;0m")
+            return(cat)
         except Exception as e:
             traceback.print_exc()
 
