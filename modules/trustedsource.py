@@ -18,7 +18,7 @@ class TrustedSource:
             'Accept-Language': 'en-GB,en;q=0.5'
         }
         session.headers.update(headers)
-        base_check = 'http://www.trustedsource.org/sources/index.pl'
+        base_check = 'http://sitelookup.mcafee.com/sources/index.pl'
         r = session.get(base_check)
         bs = BeautifulSoup(r.text, "html.parser")
         form = bs.find("form", {"class": "contactForm"})
@@ -30,7 +30,7 @@ class TrustedSource:
         session.headers.update(headers)
         payload = {'sid': (None, ''), 'e': (None, e), 'c': (None, c), 'p': (None, ''), 'action': (None, 'checksingle'),
                    'product': (None, '13-ts-3'), 'url': (None, self.url)}
-        response = session.post('https://www.trustedsource.org/en/feedback/url', headers=headers, files=payload)
+        response = session.post('https://sitelookup.mcafee.com/en/feedback/url', headers=headers, files=payload)
         bs = BeautifulSoup(response.content, "html.parser")
         form = bs.find("form", {"class": "contactForm"})
         sid = form.find("input", {'name': 'sid'}).get('value')
@@ -59,10 +59,10 @@ class TrustedSource:
             'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-GB,en;q=0.5',
-            'Referer': 'https://www.trustedsource.org/en/feedback/url',
+            'Referer': 'https://sitelookup.mcafee.com/en/feedback/url',
             'DNT': '1'
         }
-        response = requests.post('https://www.trustedsource.org/en/feedback/url', data=post_data, headers=headers)
+        response = requests.post('https://sitelookup.mcafee.com/en/feedback/url', data=post_data, headers=headers)
         if b"Thank you for your URL feedback" in response.content:
             print("[-] URL submitted, please wait up to 6 hours for categorisation")
         else:
