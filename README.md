@@ -16,6 +16,13 @@ Chameleon is a tool which assists red teams in categorising their infrastructure
 Currently, the tool supports arbitrary categorisation for Bluecoat, McAfee Trustedsource and IBM X-Force. 
 However, the tool is designed in such a way that additional proxies can be added with ease.
 
+# Dependencies
+
+- Beautiful Soup 4
+- Requests
+
+Install: `pip install beautifulsoup4 requests`
+
 # Usage
 
 ```
